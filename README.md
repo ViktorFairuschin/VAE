@@ -1,1 +1,3 @@
-# CVAE
+# Convolutional Variational Autoencoder
+
+Coming soon...

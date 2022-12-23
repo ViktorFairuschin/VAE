@@ -75,16 +75,16 @@ def create_parser():
     # inputs and outputs locations
 
     p.add_argument(
-        "--inputs_dir",
+        "--data_dir",
         type=str,
         default="data/chicago-face-database",
-        help="Inputs location"
+        help="Data location"
     )
     p.add_argument(
-        "--outputs_dir",
+        "--results_dir",
         type=str,
         default="data/results",
-        help="Outputs location"
+        help="Results location"
     )
     return p
 
@@ -96,7 +96,7 @@ def main(args):
     # create train dataset
 
     train_ds = create_train_dataset(
-        file_pattern=(args.inputs_dir + "/*"),
+        file_pattern=(args.data_dir + "/*"),
         batch_size=args.batch_size
     )
 
@@ -117,7 +117,7 @@ def main(args):
 
     # set up logger
 
-    out_dir = args.outputs_dir
+    out_dir = args.results_dir
     model_id = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     os.mkdir(os.path.join(out_dir, model_id))
 
@@ -135,10 +135,7 @@ def main(args):
     model.fit(
         train_ds,
         epochs=args.epochs,
-        callbacks=[
-            logger,
-            nan_callback,
-        ]
+        callbacks=[logger],
     )
 
     model.encoder.save(os.path.join(out_dir, model_id, 'encoder'))

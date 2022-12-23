@@ -1,8 +1,10 @@
 # Learning Disentangled Representations from Chicago Face Database.
 
-This project was created during the Certified Artificial Intelligence Engineer training.
+This is a project was working on during the Certified Artificial Intelligence Engineer training.
 
-## Usage
+### Data
+
+The dataset can be downloaded [here](https://www.chicagofaces.org).
 
 ### Model training
 

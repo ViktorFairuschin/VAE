@@ -29,13 +29,13 @@ def create_parser():
         "--data_dir",
         type=str,
         default="data/chicago-face-database",
-        help="Inputs location"
+        help="Data location"
     )
     p.add_argument(
         "--results_dir",
         type=str,
-        default="data/results/2022-12-23-17-52-07",
-        help="Outputs location"
+        default="data/results/2022-12-23-18-55-48",
+        help="Results location"
     )
     return p
 
@@ -52,6 +52,7 @@ def main(args):
 
     fig, ax = plt.subplots()
     ax = logs.plot(ax=ax)
+    fig.savefig(os.path.join(args.results_dir, 'history.png'))
     plt.show()
 
     # generate images
@@ -73,6 +74,7 @@ def main(args):
             ax[row][col].set_yticks([])
             ax[row][col].set_title(f'z[{col}] = {value :.2f}', fontsize=8)
     fig.tight_layout()
+    fig.savefig(os.path.join(args.results_dir, 'generated.png'))
     plt.show()
 
 

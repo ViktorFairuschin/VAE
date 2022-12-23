@@ -1,3 +1,3 @@
-# Convolutional Variational Autoencoder
+# Learning Disentangled Representations from Chicago Face Database.
 
-Coming soon...
+This project was created during the Certified Artificial Intelligence Engineer training. 

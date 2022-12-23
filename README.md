@@ -6,6 +6,6 @@ This project was created during the Certified Artificial Intelligence Engineer t
 
 ### Model training
 
-```
-python src/train.py --epochs 100
+```bash
+python src/train.py --epochs 100 --batch_size 16 --lr 1.0e-3
 ```

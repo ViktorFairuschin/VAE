@@ -11,3 +11,7 @@ The dataset can be downloaded [here](https://www.chicagofaces.org).
 ```bash
 python src/train.py --epochs 100 --batch_size 16 --lr 1.0e-3
 ```
+
+## References
+
+Comming soon...

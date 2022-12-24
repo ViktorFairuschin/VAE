@@ -100,7 +100,7 @@ def main(args):
     # create train dataset
 
     train_ds = create_train_dataset(
-        file_pattern=(args.inputs_dir + "/*"),
+        file_pattern=(args.data_dir + "/*"),
         batch_size=args.batch_size
     )
 
@@ -121,12 +121,12 @@ def main(args):
 
     # set up csv logger
 
-    outputs_dir = args.outputs_dir
+    results_dir = args.results_dir
     name = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    os.mkdir(os.path.join(outputs_dir, name))
+    os.mkdir(os.path.join(results_dir, name))
 
     csv_logger = tf.keras.callbacks.CSVLogger(
-        os.path.join(outputs_dir, name, 'logs.csv'),
+        os.path.join(results_dir, name, 'logs.csv'),
         separator=',',
         append=True
     )
@@ -145,8 +145,12 @@ def main(args):
         ]
     )
 
-    model.encoder.save(os.path.join(outputs_dir, name, 'encoder'))
-    model.decoder.save(os.path.join(outputs_dir, name, 'decoder'))
+    model.encoder.save(
+        filepath=os.path.join(results_dir, name, 'encoder')
+    )
+    model.decoder.save(
+        filepath=os.path.join(results_dir, name, 'decoder')
+    )
 
 
 if __name__ == "__main__":

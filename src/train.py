@@ -76,16 +76,16 @@ def create_parser():
     # inputs and outputs locations
 
     p.add_argument(
-        "--inputs_dir",
+        "--data_dir",
         type=str,
         default="data/chicago-face-database",
-        help="Inputs location"
+        help="Data location"
     )
     p.add_argument(
-        "--outputs_dir",
+        "--results_dir",
         type=str,
         default="data/results",
-        help="Outputs location"
+        help="Results location"
     )
     return p
 

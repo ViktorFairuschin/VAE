@@ -3,6 +3,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+
 import os
 import argparse
 import datetime
@@ -75,28 +76,31 @@ def create_parser():
     # inputs and outputs locations
 
     p.add_argument(
-        "--data_dir",
+        "--inputs_dir",
         type=str,
         default="data/chicago-face-database",
-        help="Data location"
+        help="Inputs location"
     )
     p.add_argument(
-        "--results_dir",
+        "--outputs_dir",
         type=str,
         default="data/results",
-        help="Results location"
+        help="Outputs location"
     )
     return p
 
 
 def main(args):
+    """
+    Train variational autoencoder.
+    """
 
     img_shape = (184, 128, 1)
 
     # create train dataset
 
     train_ds = create_train_dataset(
-        file_pattern=(args.data_dir + "/*"),
+        file_pattern=(args.inputs_dir + "/*"),
         batch_size=args.batch_size
     )
 
@@ -115,31 +119,34 @@ def main(args):
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
 
-    # set up logger
+    # set up csv logger
 
-    out_dir = args.results_dir
-    model_id = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    os.mkdir(os.path.join(out_dir, model_id))
+    outputs_dir = args.outputs_dir
+    name = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    os.mkdir(os.path.join(outputs_dir, name))
 
-    logger = tf.keras.callbacks.CSVLogger(
-        os.path.join(out_dir, model_id, 'logs.csv'),
+    csv_logger = tf.keras.callbacks.CSVLogger(
+        os.path.join(outputs_dir, name, 'logs.csv'),
         separator=',',
         append=True
     )
 
     # compile and fit model
 
-    nan_callback = tf.keras.callbacks.TerminateOnNaN()
+    terminate_on_nan = tf.keras.callbacks.TerminateOnNaN()
 
     model.compile(optimizer=optimizer)
     model.fit(
         train_ds,
         epochs=args.epochs,
-        callbacks=[logger],
+        callbacks=[
+            csv_logger,
+            terminate_on_nan,
+        ]
     )
 
-    model.encoder.save(os.path.join(out_dir, model_id, 'encoder'))
-    model.decoder.save(os.path.join(out_dir, model_id, 'decoder'))
+    model.encoder.save(os.path.join(outputs_dir, name, 'encoder'))
+    model.decoder.save(os.path.join(outputs_dir, name, 'decoder'))
 
 
 if __name__ == "__main__":

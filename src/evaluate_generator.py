@@ -26,13 +26,13 @@ def create_parser():
         "--data_dir",
         type=str,
         default="data/chicago-face-database",
-        help="Inputs location"
+        help="Data location"
     )
     p.add_argument(
         "--results_dir",
         type=str,
         default="data/results/2022-12-23-18-55-48",
-        help="Outputs location"
+        help="Results location"
     )
     return p
 

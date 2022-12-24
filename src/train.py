@@ -3,6 +3,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+
 import os
 import argparse
 import datetime
@@ -90,6 +91,9 @@ def create_parser():
 
 
 def main(args):
+    """
+    Train variational autoencoder.
+    """
 
     img_shape = (184, 128, 1)
 
@@ -115,34 +119,34 @@ def main(args):
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
 
-    # set up logger
+    # set up csv logger
 
-    out_dir = args.outputs_dir
-    model_id = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    os.mkdir(os.path.join(out_dir, model_id))
+    outputs_dir = args.outputs_dir
+    name = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    os.mkdir(os.path.join(outputs_dir, name))
 
-    logger = tf.keras.callbacks.CSVLogger(
-        os.path.join(out_dir, model_id, 'logs.csv'),
+    csv_logger = tf.keras.callbacks.CSVLogger(
+        os.path.join(outputs_dir, name, 'logs.csv'),
         separator=',',
         append=True
     )
 
     # compile and fit model
 
-    nan_callback = tf.keras.callbacks.TerminateOnNaN()
+    terminate_on_nan = tf.keras.callbacks.TerminateOnNaN()
 
     model.compile(optimizer=optimizer)
     model.fit(
         train_ds,
         epochs=args.epochs,
         callbacks=[
-            logger,
-            nan_callback,
+            csv_logger,
+            terminate_on_nan,
         ]
     )
 
-    model.encoder.save(os.path.join(out_dir, model_id, 'encoder'))
-    model.decoder.save(os.path.join(out_dir, model_id, 'decoder'))
+    model.encoder.save(os.path.join(outputs_dir, name, 'encoder'))
+    model.decoder.save(os.path.join(outputs_dir, name, 'decoder'))
 
 
 if __name__ == "__main__":

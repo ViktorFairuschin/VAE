@@ -6,15 +6,12 @@
 
 import os
 import argparse
-import datetime
 
 import tensorflow as tf
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
-from model import VariationalAutoencoder
 from utils import create_dataset
 
 
@@ -34,27 +31,27 @@ def create_parser():
     p.add_argument(
         "--results_dir",
         type=str,
-        default="data/results/2022-12-23-17-52-07",
+        default="data/results/2022-12-23-18-55-48",
         help="Outputs location"
     )
     return p
 
 
 def main(args):
+    """
+    Evaluate pretrained generator.
 
-    # models and logs
+    Load pretrained encoder and decoder models,
+    compute encodings space based on train data
+    and generate some new images.
+    """
 
-    logs = pd.read_csv(os.path.join(args.results_dir, 'logs.csv'), index_col='epoch')
+    # load models
+
     encoder = tf.keras.models.load_model(os.path.join(args.results_dir, 'encoder'))
     decoder = tf.keras.models.load_model(os.path.join(args.results_dir, 'decoder'))
 
-    # plot training history
-
-    fig, ax = plt.subplots()
-    ax = logs.plot(ax=ax)
-    plt.show()
-
-    # generate images
+    # load images and compute encodings
 
     dataset = create_dataset(file_pattern=(args.data_dir + "/*")).batch(16)
 
@@ -62,18 +59,25 @@ def main(args):
     codes_min = np.min(codes, axis=0)
     codes_max = np.max(codes, axis=0)
 
-    fig, ax = plt.subplots(nrows=5, ncols=10)
+    # generate new images
+
+    fig, ax = plt.subplots(
+        nrows=5,
+        ncols=10,
+        dpi=150,
+    )
     for col in range(10):
         for row, value in enumerate(np.linspace(codes_min[col], codes_max[col], 5)):
             sample = np.zeros((1, 10))
             sample[0, row] = value
             decoded = decoder(sample)
-            ax[row][col].imshow(decoded[0])
+            ax[row][col].imshow(decoded[0], cmap='gray')
             ax[row][col].set_xticks([])
             ax[row][col].set_yticks([])
-            ax[row][col].set_title(f'z[{col}] = {value :.2f}', fontsize=8)
+            ax[row][col].set_title(f'z[{col}] = {value :.2f}', fontsize=6)
     fig.tight_layout()
-    plt.show()
+    fig.savefig(os.path.join(args.results_dir, 'generated.png'))
+    # plt.show()
 
 
 if __name__ == "__main__":

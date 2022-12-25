@@ -1,17 +1,4 @@
-# Learning Disentangled Representations from Chicago Face Database.
+# Unsupervised Learning of Image Representations with Deep Convolutional Variation Autoencoder 
 
-This is a project was working on during the Certified Artificial Intelligence Engineer training.
+This is a project I was working on during the Certified Artificial Intelligence Engineer training in December 2022. The code provided here is a tensorflow implementation of a deep concolutional variational autoencoder trained on the [Chicago Face Database](https://www.chicagofaces.org).
 
-## Data
-
-The dataset can be downloaded [here](https://www.chicagofaces.org).
-
-## Model training
-
-```bash
-python src/train.py --epochs 100 --batch_size 16 --lr 1.0e-3
-```
-
-## References
-
-Comming soon...

@@ -11,7 +11,7 @@ import datetime
 import tensorflow as tf
 
 from model import VariationalAutoencoder
-from utils import create_train_dataset
+from utils import create_train_dataset, KLWeightAnnealing
 
 
 def create_parser():
@@ -72,6 +72,12 @@ def create_parser():
         default=1.0e-3,
         help="Learning rate of the optimizer"
     )
+    p.add_argument(
+        "--warmup",
+        type=int,
+        default=0,
+        help="Number of warm up epochs"
+    )
 
     # inputs and outputs locations
 
@@ -131,6 +137,10 @@ def main(args):
         append=True
     )
 
+    # set up KL warm up
+
+    warmup = KLWeightAnnealing(epochs=args.warmup)
+
     # compile and fit model
 
     terminate_on_nan = tf.keras.callbacks.TerminateOnNaN()
@@ -139,9 +149,11 @@ def main(args):
     model.fit(
         train_ds,
         epochs=args.epochs,
+        initial_epoch=0,
         callbacks=[
             csv_logger,
             terminate_on_nan,
+            warmup,
         ]
     )
 

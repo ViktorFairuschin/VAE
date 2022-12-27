@@ -34,12 +34,19 @@ class KullbackLeiblerDivergence(tf.keras.losses.Loss):
     """
     Closed form solution of Kullback-Leibler divergence
     between true posterior and approximate posterior.
+
+    Params:
+        weight: KL weight used for warm up during training.
     """
+
+    def __init__(self, weight):
+        super(KullbackLeiblerDivergence, self).__init__()
+        self.weight = weight
 
     def call(self, mean, logvar):
         loss = - 0.5 * (1 + logvar - tf.square(mean) - tf.exp(logvar))
         loss = tf.reduce_mean(tf.reduce_sum(loss, axis=-1))
-        return loss
+        return self.weight * loss
 
     def get_config(self):
         config = super(KullbackLeiblerDivergence, self).get_config()
@@ -220,7 +227,8 @@ class VariationalAutoencoder(tf.keras.models.Model):
 
         # losses and metrics
 
-        self.kl_loss = KullbackLeiblerDivergence()
+        self.kl_weight = tf.Variable(1.0, trainable=False, name='kl_weight')
+        self.kl_loss = KullbackLeiblerDivergence(self.kl_weight)
         self.bce_loss = BinaryCrossentropy()
 
         self.loss_metric = tf.keras.metrics.Mean('loss', dtype=tf.float32)
@@ -254,7 +262,7 @@ class VariationalAutoencoder(tf.keras.models.Model):
         return {
             'loss': self.loss_metric.result(),
             'kl': self.kl_metric.result(),
-            'bce': self.bce_metric.result()
+            'bce': self.bce_metric.result(),
         }
 
     @tf.function

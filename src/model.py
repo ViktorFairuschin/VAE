@@ -118,7 +118,7 @@ class VariationalAutoencoder(tf.keras.models.Model):
         self.dense_units = dense_units
         self.activation = activation
         self.z_dim = z_dim
-        self.beta = beta
+        self.beta = beta / z_dim
 
         # encoder input
 

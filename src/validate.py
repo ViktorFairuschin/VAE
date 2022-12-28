@@ -60,7 +60,7 @@ def main(args):
         nrows=2,
         ncols=10,
         dpi=150,
-        #figsize=(20, 3)
+        figsize=(20, 6)
     )
     for col in range(10):
         img = next(iter(dataset))

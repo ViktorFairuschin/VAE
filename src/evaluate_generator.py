@@ -17,7 +17,7 @@ from utils import create_dataset
 
 def create_parser():
     p = argparse.ArgumentParser(
-        description="Train variational autoencoder on chicago face dataset."
+        description="Evaluate pretrained model."
     )
 
     # data and results locations

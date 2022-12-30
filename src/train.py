@@ -78,6 +78,12 @@ def create_parser():
         default=0,
         help="Number of warm up epochs"
     )
+    p.add_argument(
+        "--seed",
+        type=int,
+        default=10,
+        help="Random seed"
+    )
 
     # inputs and outputs locations
 
@@ -102,6 +108,7 @@ def main(args):
     """
 
     img_shape = (184, 128, 1)
+    tf.random.set_seed(args.seed)
 
     # create train dataset
 

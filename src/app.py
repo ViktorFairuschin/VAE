@@ -12,21 +12,21 @@ import tensorflow as tf
 
 # location of the pretrained model
 
-MODEL_LOC = 'data/results/pretrained/decoder'
+MODEL_LOC = 'data/results/2022-12-29-09-53-16/decoder'
 
-# [min_value, max_value, value and step] of each slider
+# [min_value, max_value, value, step, disabled] of each slider
 
 VALS = [
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1],
-    [-1.0, 1.0, 0.0, 0.1]
+    [-2.64, 2.65, 0.0, 0.01, False],
+    [-2.77, 2.77, 0.0, 0.01, False],
+    [-2.80, 2.65, 0.0, 0.01, False],
+    [-0.03, 0.02, 0.0, 0.01, True],  # disable
+    [-2.84, 2.77, 0.0, 0.01, False],
+    [-2.71, 2.60, 0.0, 0.01, False],
+    [-2.83, 2.72, 0.0, 0.01, False],
+    [-2.40, 2.45, 0.0, 0.01, False],
+    [-0.02, 0.06, 0.0, 0.01, True],  # disable
+    [-2.59, 2.59, 0.0, 0.01, False]
 ]
 
 
@@ -59,6 +59,7 @@ for i in range(0, 5):
         step=VALS[i][3],
         label_visibility='visible',
         format=None,
+        disabled=VALS[i][4],
     ))
 
 for i in range(5, 10):
@@ -70,6 +71,7 @@ for i in range(5, 10):
         step=VALS[i][3],
         label_visibility='visible',
         format=None,
+        disabled=VALS[i][4],
     ))
 
 # load generator model

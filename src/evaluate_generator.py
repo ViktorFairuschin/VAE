@@ -31,7 +31,7 @@ def create_parser():
     p.add_argument(
         "--results_dir",
         type=str,
-        default="data/results/pretrained",
+        default="data/results/2023-01-11-10-25-35",
         help="Results location"
     )
     return p

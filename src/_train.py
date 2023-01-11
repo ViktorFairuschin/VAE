@@ -10,7 +10,7 @@ import datetime
 
 import tensorflow as tf
 
-from model import VAE
+from model import VariationalAutoencoder
 from utils import create_train_dataset, KLWeightAnnealing
 
 
@@ -21,6 +21,18 @@ def create_parser():
 
     # model parameters
 
+    p.add_argument(
+        "--conv_filters",
+        type=list,
+        default=[16, 32, 64],
+        help="Number of filters in the convolution layers"
+    )
+    p.add_argument(
+        "--dense_units",
+        type=list,
+        default=[2048, 512, 128],
+        help="Number of units in the dense layers"
+    )
     p.add_argument(
         "--activation",
         type=str,
@@ -95,8 +107,7 @@ def main(args):
     Train variational autoencoder.
     """
 
-    # set random seed
-
+    img_shape = (184, 128, 1)
     tf.random.set_seed(args.seed)
 
     # create train dataset
@@ -108,7 +119,10 @@ def main(args):
 
     # create model
 
-    model = VAE(
+    model = VariationalAutoencoder(
+        img_shape=img_shape,
+        conv_filters=args.conv_filters,
+        dense_units=args.dense_units,
         activation=args.activation,
         z_dim=args.z_dim,
         beta=args.beta,

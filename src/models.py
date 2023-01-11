@@ -92,7 +92,7 @@ class VAE(tf.keras.models.Model):
 
         super().__init__(**kwargs)
 
-        self.activation = activation
+        self.activation = tf.keras.activations.deserialize(activation)
         self.z_dim = z_dim
         self.beta = beta / z_dim
 

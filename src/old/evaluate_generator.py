@@ -12,7 +12,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
-from utils import create_dataset
+from src.old.utils import create_dataset
 
 
 def create_parser():

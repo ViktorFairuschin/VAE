@@ -304,10 +304,11 @@ class ConvBlock(tf.keras.layers.Layer):
     Convolution block consisting of a Conv2D and a MaxPooling2D layer.
     """
 
-    def __init__(self, filters: int, activation: str, **kwargs) -> None:
+    def __init__(self, filters: int, activation: str, pool_size: int, **kwargs) -> None:
         """
         :param filters: Number of filters in the convolution layer
         :param activation: Activation function
+        :param pool_size: Pool window size
         :param kwargs: Additional keyword arguments
         """
 
@@ -315,17 +316,18 @@ class ConvBlock(tf.keras.layers.Layer):
 
         self.filters = filters
         self.activation = activation
+        self.pool_size = pool_size
 
         self.conv = tf.keras.layers.Conv2D(
             filters=self.filters,
-            kernel_size=(3, 3),
-            strides=(2, 2),
+            kernel_size=3,
+            strides=2,
             activation=self.activation,
             padding='same',
         )
 
         self.pool = tf.keras.layers.MaxPooling2D(
-            pool_size=(4, 4)
+            pool_size=self.pool_size
         )
 
     def call(self, inputs, *args, **kwargs):
@@ -337,6 +339,7 @@ class ConvBlock(tf.keras.layers.Layer):
         config = super().get_config()
         config.update({"filters": self.filters})
         config.update({"activation": self.activation})
+        config.update({"pool_size": self.pool_size})
         return config
 
     @classmethod
@@ -350,16 +353,18 @@ class ConvTransposeBlock(tf.keras.layers.Layer):
     and an UpSampling2D layer.
     """
 
-    def __init__(self, filters: int, activation: str, **kwargs) -> None:
+    def __init__(self, filters: int, activation: str, pool_size: int, **kwargs) -> None:
         """
         :param filters: Number of filters in the convolution layer
         :param activation: Activation function
+        :param pool_size: Pool window size
         :param kwargs: Additional keyword arguments
         """
         super().__init__(**kwargs)
 
         self.filters = filters
         self.activation = activation
+
 
         self.pool = tf.keras.layers.UpSampling2D(
             size=(4, 4)
@@ -382,6 +387,7 @@ class ConvTransposeBlock(tf.keras.layers.Layer):
         config = super().get_config()
         config.update({"filters": self.filters})
         config.update({"activation": self.activation})
+        config.update({"pool_size": self.pool_size})
         return config
 
     @classmethod

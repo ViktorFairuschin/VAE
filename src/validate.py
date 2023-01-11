@@ -46,7 +46,7 @@ def main(args):
 
     # load model
 
-    model = VAE()
+    model = VAE(activation='relu', z_dim=10, beta=1.0)
     model.encoder = tf.keras.models.load_model(os.path.join(args.results_dir, 'encoder'))
     model.decoder = tf.keras.models.load_model(os.path.join(args.results_dir, 'decoder'))
 

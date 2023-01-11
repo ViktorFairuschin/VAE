@@ -12,7 +12,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from utils import create_dataset
-from model import VariationalAutoencoder
+from model import VAE
 
 
 def create_parser():
@@ -31,7 +31,7 @@ def create_parser():
     p.add_argument(
         "--results_dir",
         type=str,
-        default="data/results/pretrained",
+        default="data/results/2023-01-11-10-25-35",
         help="Results location"
     )
     return p
@@ -46,7 +46,7 @@ def main(args):
 
     # load model
 
-    model = VariationalAutoencoder()
+    model = VAE()
     model.encoder = tf.keras.models.load_model(os.path.join(args.results_dir, 'encoder'))
     model.decoder = tf.keras.models.load_model(os.path.join(args.results_dir, 'decoder'))
 

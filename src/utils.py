@@ -14,7 +14,7 @@ def parse_image(path):
     image = tf.io.read_file(path)
     image = tf.io.decode_jpeg(image, channels=1)
     image = tf.image.convert_image_dtype(image, tf.float32)
-    image = tf.image.resize(image, size=[184, 128], preserve_aspect_ratio=False)
+    image = tf.image.resize(image, size=[1024, 512], preserve_aspect_ratio=False)
     return image
 
 

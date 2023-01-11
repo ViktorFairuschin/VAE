@@ -16,7 +16,7 @@ class WarmUp(tf.keras.callbacks.Callback):
         :param epochs: Number of warmup epochs
         """
 
-        super(WarmUp, self).__init__()
+        super().__init__()
         self.epochs = epochs
 
     def on_epoch_begin(self, epoch, logs=None):

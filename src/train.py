@@ -29,6 +29,7 @@ def create_parser() -> argparse.ArgumentParser:
 
     parser.add_argument("--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size")
+    parser.add_argument("--optimizer", type=str, default="adam", help="Optimizer")
     parser.add_argument("--lr", type=float, default=1.0e-3, help="Learning rate")
     parser.add_argument("--warmup", type=int, default=0, help="Number of warm up epochs")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
@@ -56,7 +57,8 @@ def main(args: argparse.Namespace) -> None:
     model = VAE(activation=args.activation, z_dim=args.z_dim, beta=args.beta)
 
     # set up optimizer
-    optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
+    # optimizer = tf.keras.optimizers.deserialize(args.optimizer)
+    # tf.keras.optimizers.Adam(learning_rate=args.lr)
 
     # create results dir
     results_dir = os.path.join(args.results_dir, datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
@@ -68,7 +70,7 @@ def main(args: argparse.Namespace) -> None:
     terminate_on_nan = tf.keras.callbacks.TerminateOnNaN()
 
     # compile and fit model
-    model.compile(optimizer=optimizer)
+    model.compile(optimizer=args.optimizer)
     model.fit(
         x=train_ds, y=None,
         epochs=args.epochs,

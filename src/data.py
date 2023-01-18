@@ -22,7 +22,8 @@ def process_image(path: str, output_shape: tuple = (256, 128, 1)) -> tf.Tensor:
     image = tf.io.read_file(path)
     image = tf.io.decode_jpeg(image, channels=channels)
     image = tf.image.convert_image_dtype(image, tf.float32)
-    image = tf.image.resize(image, size=[height, width], preserve_aspect_ratio=False)
+    image = tf.image.resize_with_pad(image, target_height=height, target_width=width)
+    # image = tf.image.resize(image, size=[height, width], preserve_aspect_ratio=False)
 
     return image
 

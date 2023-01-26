@@ -23,8 +23,8 @@ def create_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(description="Validate model.")
 
-    parser.add_argument("--data_dir", type=str, default="data/chicago-face-database", help="Data location")
-    parser.add_argument("--results_dir", type=str, default="data/results/2023-01-11-14-30-29", help="Results location")
+    parser.add_argument("--data_dir", type=str, default="data", help="Data location")
+    parser.add_argument("--results_dir", type=str, default="results", help="Results location")
 
     return parser
 

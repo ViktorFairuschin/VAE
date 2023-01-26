@@ -34,8 +34,8 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("--warmup", type=int, default=0, help="Number of warm up epochs")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
 
-    parser.add_argument("--data_dir", type=str, default="data/chicago-face-database", help="Data location")
-    parser.add_argument("--results_dir", type=str, default="data/results", help="Results location")
+    parser.add_argument("--data_dir", type=str, default="data", help="Data location")
+    parser.add_argument("--results_dir", type=str, default="results", help="Results location")
 
     return parser
 
